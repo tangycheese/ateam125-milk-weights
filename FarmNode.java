@@ -5,7 +5,7 @@
  * @author doran
  *
  */
-public class FarmNode {
+public class FarmNode implements Comparable {
 
     private final String FARM_ID; // unique farm ID
     private int milkWeightTotal; // total amount of milk produced this month
@@ -64,6 +64,18 @@ public class FarmNode {
       milkWeightTotal = milkWeightTotal - dailyMilkWeights[day];
       dailyMilkWeights[day] = milkWeight;
       milkWeightTotal = milkWeightTotal + milkWeight;
+    }
+
+    /**
+     * Compares two different farmNodes based on their total milkWeights for 
+     * the month. 
+     * @param other - a different farmNode
+     * @returns negative if this FarmNode's milkWeight is less than other, positive
+     * if this FarmNode's milkWeight is greater than other. 
+     */
+    @Override
+    public int compareTo(Object other) {
+      return this.milkWeightTotal - ((FarmNode) other).getTotalWeight();
     }
 }
 
