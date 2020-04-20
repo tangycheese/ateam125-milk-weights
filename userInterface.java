@@ -9,29 +9,25 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.*;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*; 
+import javafx.scene.canvas.*; 
+import javafx.scene.layout.*; 
+
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
 /**
  * @author Y
+ *
+ *references https://www.geeksforgeeks.org/javafx-hbox-class/
+ *http://tutorials.jenkov.com/javafx/index.html
  *
  */
 public class userInterface extends Application {
@@ -46,34 +42,22 @@ public class userInterface extends Application {
     
     BorderPane mainroot = new BorderPane();
     Scene mainScene = new Scene(mainroot, WINDOW_WIDTH, WINDOW_HEIGHT);
-    Label label = new Label("Main Screen");
-    mainroot.setTop(label);
     
-    BorderPane inputRoot = new BorderPane();
-    Scene inputScene = new Scene(inputRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
-    Label inputDirections = new Label("Input your files here");
-    inputRoot.setTop(inputDirections);
+    BorderPane alterRoot = new BorderPane();
+    Scene alterScene = new Scene(alterRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
     
     BorderPane dataRoot = new BorderPane();
     Scene dataScene = new Scene(dataRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
-    Label dataDirections = new Label("See the data here");
-    dataRoot.setTop(dataDirections);
-    
     
     // create buttons to navigate between scenes and add them to borderpanes of scenes
-    Button toInputBtn = new Button("Input screen");
-    Button toDataBtn = new Button("Data screen");
+    Button toAlterBtn = new Button("Change data screen");
+    Button toDataBtn = new Button("View data screen");
     Button toMainBtn = new Button("Main screen");
     Button toMainBtn2 = new Button("Main screen");
     
-    FlowPane botbox = new FlowPane();
-    botbox.getChildren().add(toInputBtn);
-    botbox.getChildren().add(toDataBtn);
-    mainroot.setBottom(botbox);
-    
-    toInputBtn.setOnAction(new EventHandler<ActionEvent>() {
+    toAlterBtn.setOnAction(new EventHandler<ActionEvent>() {
        public void handle(ActionEvent e) {
-        mainStage.setScene(inputScene);
+        mainStage.setScene(alterScene);
     }});   
     toMainBtn.setOnAction(new EventHandler<ActionEvent>() {
        public void handle(ActionEvent e) {
@@ -88,10 +72,109 @@ public class userInterface extends Application {
        mainStage.setScene(dataScene);
    }});
     
-    HBox inputBtm = new HBox(toMainBtn);
-    inputRoot.setBottom(inputBtm);
+    // setup main scene
+    
+    Label label = new Label("Main Screen");
+    mainroot.setTop(label);
+    
+    
+    HBox mainBtm = new HBox(40);
+    mainBtm.setAlignment(Pos.CENTER);
+    mainBtm.getChildren().add(toAlterBtn);
+    mainBtm.getChildren().add(toDataBtn);
+    mainroot.setBottom(mainBtm);
+    
+    // setup scene to modify or add data
+    VBox alterTop = new VBox(10);
+    alterTop.setAlignment(Pos.CENTER);
+    alterRoot.setTop(alterTop);
+    
+    Text alterDirections = new Text("Choose your desired action");
+    HBox alterChoices = new HBox(10);
+    alterChoices.setAlignment(Pos.CENTER);
+    Button addData = new Button("Add data");
+    Button editData = new Button("Edit data");
+    Button removeData = new Button("Remove data");
+    Button inputData = new Button("Input file as data");
+    alterChoices.getChildren().addAll(addData, editData, removeData, inputData);
+    alterTop.getChildren().addAll(alterDirections, alterChoices);
+    
+    VBox inputCenter = new VBox(30);
+    inputCenter.setAlignment(Pos.TOP_CENTER);
+    alterRoot.setCenter(inputCenter);
+    Text currInputType = new Text("Current input type");
+    Button processBtn = new Button("Process instruction");
+    
+    Text farmDesc = new Text("Enter in the number of the farm");
+    TextField farmInput = new TextField();
+    HBox farmBox = new HBox(20);
+    farmBox.setAlignment(Pos.CENTER);
+    farmBox.getChildren().addAll(farmDesc,farmInput);
+    
+    Text monthDesc = new Text("Enter in the month as a number (1 = Jan, 12 = Dec)");
+    TextField monthInput = new TextField();
+    HBox monthBox = new HBox(20);
+    monthBox.setAlignment(Pos.CENTER);
+    monthBox.getChildren().addAll(monthDesc,monthInput);
+    
+    Text yearDesc = new Text("Enter in the year");
+    TextField yearInput = new TextField();
+    HBox yearBox = new HBox(20);
+    yearBox.setAlignment(Pos.CENTER);
+    yearBox.getChildren().addAll(yearDesc,yearInput);
+    
+    Text weightDesc = new Text("Enter in the milk weight");
+    TextField weightInput = new TextField();
+    HBox weightBox = new HBox(20);
+    weightBox.setAlignment(Pos.CENTER);
+    weightBox.getChildren().addAll(weightDesc,weightInput);
+    
+    Text fileInDesc = new Text("Type the name of the file you want to input here");
+    TextField fileInput = new TextField();
+    HBox fileInBox = new HBox(20);
+    fileInBox.setAlignment(Pos.CENTER);
+    fileInBox.getChildren().addAll(fileInDesc,fileInput);
+    
+    inputCenter.getChildren().add(currInputType);
+    
+    addData.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e) {
+       inputCenter.getChildren().clear();
+       currInputType.setText("Adding data");
+       inputCenter.getChildren().addAll(currInputType, farmBox, monthBox, yearBox, processBtn);
+   }});
+    editData.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e) {
+       inputCenter.getChildren().clear();
+       currInputType.setText("Editing data");
+       inputCenter.getChildren().addAll(currInputType, farmBox, monthBox, yearBox, weightBox, processBtn);
+   }});
+    removeData.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e) {
+       inputCenter.getChildren().clear();
+       currInputType.setText("Removing data");
+       inputCenter.getChildren().addAll(currInputType, farmBox, monthBox, yearBox, processBtn);
+   }});
+    inputData.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e) {
+       inputCenter.getChildren().clear();
+       currInputType.setText("Inputting a file as data");
+       inputCenter.getChildren().addAll(currInputType, fileInBox, processBtn);
+   }});
+    
+    
+    
+    HBox alterBtm = new HBox(toMainBtn);
+    alterBtm.setAlignment(Pos.CENTER);
+    alterRoot.setBottom(alterBtm);
+    
+    
+    //setup scene to display data
+    Label dataDirections = new Label("See the data here");
+    dataRoot.setTop(dataDirections);
     
     HBox dataBtm = new HBox(toMainBtn2);
+    dataBtm.setAlignment(Pos.CENTER);
     dataRoot.setBottom(dataBtm);
     
     
