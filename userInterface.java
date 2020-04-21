@@ -32,8 +32,11 @@ import javafx.stage.Stage;
  */
 public class userInterface extends Application {
   private List<String> args;
-  private static final int WINDOW_WIDTH = 600;
+  private static final int WINDOW_WIDTH = 750;
   private static final int WINDOW_HEIGHT = 500;
+  
+  // retain which command is being used in show data screen, 0 = none, 1 = farm, 2 = annual, 3 = monthly, 4 = date range
+  private int dataVal = 0;
   
   @Override
   public void start(Stage mainStage) throws Exception {
@@ -74,9 +77,9 @@ public class userInterface extends Application {
     
     // setup main scene
     
-    Label label = new Label("Main Screen");
-    mainroot.setTop(label);
-    
+    HBox mainTop = new HBox(new Text("Welcome to our milk weights program"));
+    mainTop.setAlignment(Pos.CENTER);
+    mainroot.setTop(mainTop);
     
     HBox mainBtm = new HBox(40);
     mainBtm.setAlignment(Pos.CENTER);
@@ -99,11 +102,12 @@ public class userInterface extends Application {
     alterChoices.getChildren().addAll(addData, editData, removeData, inputData);
     alterTop.getChildren().addAll(alterDirections, alterChoices);
     
-    VBox inputCenter = new VBox(30);
+    VBox inputCenter = new VBox(20);
     inputCenter.setAlignment(Pos.TOP_CENTER);
     alterRoot.setCenter(inputCenter);
     Text currInputType = new Text("Current input type");
     Button processBtn = new Button("Process instruction");
+    inputCenter.getChildren().add(currInputType);
     
     Text farmDesc = new Text("Enter in the number of the farm");
     TextField farmInput = new TextField();
@@ -129,14 +133,19 @@ public class userInterface extends Application {
     weightBox.setAlignment(Pos.CENTER);
     weightBox.getChildren().addAll(weightDesc,weightInput);
     
+    Text dayDesc = new Text("Enter in the day you want to change as a number");
+    TextField dayInput = new TextField();
+    HBox dayBox = new HBox(20);
+    dayBox.setAlignment(Pos.CENTER);
+    dayBox.getChildren().addAll(dayDesc,dayInput);
+    
     Text fileInDesc = new Text("Type the name of the file you want to input here");
     TextField fileInput = new TextField();
     HBox fileInBox = new HBox(20);
     fileInBox.setAlignment(Pos.CENTER);
     fileInBox.getChildren().addAll(fileInDesc,fileInput);
     
-    inputCenter.getChildren().add(currInputType);
-    
+      
     addData.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent e) {
        inputCenter.getChildren().clear();
@@ -147,7 +156,7 @@ public class userInterface extends Application {
       public void handle(ActionEvent e) {
        inputCenter.getChildren().clear();
        currInputType.setText("Editing data");
-       inputCenter.getChildren().addAll(currInputType, farmBox, monthBox, yearBox, weightBox, processBtn);
+       inputCenter.getChildren().addAll(currInputType, farmBox, monthBox, yearBox, weightBox, dayBox, processBtn);
    }});
     removeData.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent e) {
@@ -163,15 +172,227 @@ public class userInterface extends Application {
    }});
     
     
-    
     HBox alterBtm = new HBox(toMainBtn);
     alterBtm.setAlignment(Pos.CENTER);
     alterRoot.setBottom(alterBtm);
     
     
     //setup scene to display data
-    Label dataDirections = new Label("See the data here");
-    dataRoot.setTop(dataDirections);
+    VBox dataTop = new VBox(10);
+    dataTop.setAlignment(Pos.CENTER);
+    dataRoot.setTop(dataTop);
+    
+    Text dataDirections = new Text("Choose your desired action");
+    HBox dataChoices = new HBox(10);
+    dataChoices.setAlignment(Pos.CENTER);
+    Button farmReport = new Button("Single farm (annual)");
+    Button annualReport = new Button("Annual (all farms)");
+    Button monthlyReport = new Button("Monthly (all farms)");
+    Button dateRange = new Button("Date range (all farms)");
+    dataChoices.getChildren().addAll(farmReport, annualReport, monthlyReport, dateRange);
+    dataTop.getChildren().addAll(dataDirections, dataChoices);
+    
+    VBox dataCenter = new VBox(20);
+    dataCenter.setAlignment(Pos.TOP_CENTER);
+    dataRoot.setCenter(dataCenter);
+    
+    Text currDataType = new Text("Current data type");
+    dataCenter.getChildren().add(currDataType);
+    
+    Button showDataBtn = new Button("Show Data");
+    
+    // new boxes for data display screen to not have issues when switching screens
+    // othewise same 
+    Text farmDescD = new Text("Enter in the number of the farm");
+    TextField farmInputD = new TextField();
+    HBox farmBoxD = new HBox(20);
+    farmBoxD.setAlignment(Pos.CENTER);
+    farmBoxD.getChildren().addAll(farmDescD,farmInputD);
+    
+    Text monthDescD = new Text("Enter in the month as a number (1 = Jan, 12 = Dec)");
+    TextField monthInputD = new TextField();
+    HBox monthBoxD = new HBox(20);
+    monthBoxD.setAlignment(Pos.CENTER);
+    monthBoxD.getChildren().addAll(monthDescD,monthInputD);
+    
+    Text yearDescD = new Text("Enter in the year");
+    TextField yearInputD = new TextField();
+    HBox yearBoxD = new HBox(20);
+    yearBoxD.setAlignment(Pos.CENTER);
+    yearBoxD.getChildren().addAll(yearDescD,yearInputD);
+    
+    Text startDescD = new Text("Enter in the starting day (yyyy-mm-dd)");
+    TextField startInputD = new TextField();
+    HBox startBoxD = new HBox(20);
+    startBoxD.setAlignment(Pos.CENTER);
+    startBoxD.getChildren().addAll(startDescD,startInputD);
+    
+    Text endDescD = new Text("Enter in the ending day (yyyy-mm-dd)");
+    TextField endInputD = new TextField();
+    HBox endBoxD = new HBox(20);
+    endBoxD.setAlignment(Pos.CENTER);
+    endBoxD.getChildren().addAll(endDescD,endInputD);
+    
+    farmReport.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e) {
+       dataCenter.getChildren().clear();
+       currDataType.setText("Input farm id and year");
+       dataVal = 1;
+       dataCenter.getChildren().addAll(currDataType, farmBoxD, yearBoxD, showDataBtn);
+   }});   
+    annualReport.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e) {
+       dataCenter.getChildren().clear();
+       currDataType.setText("Input a year");
+       dataVal = 2;
+       dataCenter.getChildren().addAll(currDataType, yearBoxD, showDataBtn);
+   }});
+    monthlyReport.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e) {
+       dataCenter.getChildren().clear();
+       currDataType.setText("Input month and year");
+       dataVal = 3;
+       dataCenter.getChildren().addAll(currDataType, monthBoxD, yearBoxD, showDataBtn);
+   }});
+    dateRange.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e) {
+       dataCenter.getChildren().clear();
+       currDataType.setText("Input start day and end day");
+       dataVal = 4;
+       dataCenter.getChildren().addAll(currDataType, startBoxD, endBoxD, showDataBtn);
+   }});
+    
+    //
+    showDataBtn.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e) {
+        dataCenter.getChildren().clear();
+        VBox showedData = new VBox(15);
+        showedData.setAlignment(Pos.CENTER);
+        
+        // add buttons to change between sets of farms
+        VBox nextFarms = new VBox(15);
+        nextFarms.setAlignment(Pos.CENTER);
+        nextFarms.getChildren().add(new Button("Next farms"));
+        VBox lastFarms = new VBox(15);
+        lastFarms.setAlignment(Pos.CENTER);
+        lastFarms.getChildren().add(new Button("Last farms"));
+        
+         // set up slots for data display
+            Text IDVal = new Text();
+            HBox r1 = new HBox(10);
+            Text s1 = new Text();
+            Text s2 = new Text();
+            Text s3 = new Text();
+            Text s4 = new Text();
+            r1.getChildren().addAll(s1, s2, s3, s4);
+            r1.setAlignment(Pos.CENTER);
+            HBox r2 = new HBox(10);
+            Text s5 = new Text();
+            Text s6 = new Text();
+            Text s7 = new Text();
+            Text s8 = new Text();
+            r2.getChildren().addAll(s5, s6, s7, s8);
+            r2.setAlignment(Pos.CENTER);
+            HBox r3 = new HBox(10);
+            Text s9 = new Text();
+            Text s10 = new Text();
+            Text s11 = new Text();
+            Text s12 = new Text();
+            r3.getChildren().addAll(s9, s10, s11, s12);
+            r3.setAlignment(Pos.CENTER);
+            
+            showedData.getChildren().addAll(IDVal, r1, r2,r3);
+            
+        switch (dataVal) {
+          case 0:
+            dataCenter.getChildren().add(new Text("No command recognized"));
+            break;
+            // temporary for display purposes
+          case 1: // farm report
+            dataCenter.getChildren().addAll(currDataType, farmBoxD, yearBoxD, showDataBtn, showedData);
+            IDVal.setText("Farm #" + farmInputD.getText() + " Year: " + yearInputD.getText());
+            s1.setText("jan: totalweight, percent");
+            s2.setText("feb: totalweight, percent");
+            s3.setText("mar: totalweight, percent");
+            s4.setText("apr: totalweight, percent");
+            
+            s5.setText("may: totalweight, percent");
+            s6.setText("jun: totalweight, percent");
+            s7.setText("jul: totalweight, percent");
+            s8.setText("aug: totalweight, percent");
+            
+            s9.setText("sep: totalweight, percent");
+            s10.setText("oct: totalweight, percent");
+            s11.setText("nov: totalweight, percent");
+            s12.setText("dec: totalweight, percent");
+            Text farmYear = new Text("year total,     year percent:");
+            showedData.getChildren().add(farmYear);
+            dataRoot.setRight(null);
+            dataRoot.setLeft(null);
+            break;
+          case 2: // annual report
+            dataCenter.getChildren().addAll(currDataType, yearBoxD, showDataBtn, showedData);
+            IDVal.setText("Year: " + yearInputD.getText());
+            s1.setText("farm: totalweight, percent");
+            s2.setText("farm: totalweight, percent");
+            s3.setText("farm: totalweight, percent");
+            s4.setText("farm: totalweight, percent");
+            
+            s5.setText("farm: totalweight, percent");
+            s6.setText("farm: totalweight, percent");
+            s7.setText("farm: totalweight, percent");
+            s8.setText("farm: totalweight, percent");
+            
+            s9.setText("farm: totalweight, percent");
+            s10.setText("farm: totalweight, percent");
+            s11.setText("farm: totalweight, percent");
+            s12.setText("farm: totalweight, percent");
+            dataRoot.setRight(nextFarms);
+            dataRoot.setLeft(lastFarms);
+            break;
+          case 3: // month report
+            dataCenter.getChildren().addAll(currDataType, monthBoxD, yearBoxD, showDataBtn, showedData);
+            IDVal.setText("Month: " + monthInputD.getText() + " Year: " + yearInputD.getText());
+            s1.setText("farm: totalweight, percent");
+            s2.setText("farm: totalweight, percent");
+            s3.setText("farm: totalweight, percent");
+            s4.setText("farm: totalweight, percent");
+            
+            s5.setText("farm: totalweight, percent");
+            s6.setText("farm: totalweight, percent");
+            s7.setText("farm: totalweight, percent");
+            s8.setText("farm: totalweight, percent");
+            
+            s9.setText("farm: totalweight, percent");
+            s10.setText("farm: totalweight, percent");
+            s11.setText("farm: totalweight, percent");
+            s12.setText("farm: totalweight, percent");
+            dataRoot.setRight(nextFarms);
+            dataRoot.setLeft(lastFarms);
+            break;
+          case 4: // date report
+            dataCenter.getChildren().addAll(currDataType, startBoxD, endBoxD, showDataBtn, showedData);
+            IDVal.setText("start day:    end day:");
+            s1.setText("farm: totalweight, percent");
+            s2.setText("farm: totalweight, percent");
+            s3.setText("farm: totalweight, percent");
+            s4.setText("farm: totalweight, percent");
+            
+            s5.setText("farm: totalweight, percent");
+            s6.setText("farm: totalweight, percent");
+            s7.setText("farm: totalweight, percent");
+            s8.setText("farm: totalweight, percent");
+            
+            s9.setText("farm: totalweight, percent");
+            s10.setText("farm: totalweight, percent");
+            s11.setText("farm: totalweight, percent");
+            s12.setText("farm: totalweight, percent");
+            dataRoot.setRight(nextFarms);
+            dataRoot.setLeft(lastFarms);
+            break;
+        }
+   }});
+    
     
     HBox dataBtm = new HBox(toMainBtn2);
     dataBtm.setAlignment(Pos.CENTER);
@@ -182,7 +403,7 @@ public class userInterface extends Application {
     mainStage.setScene(mainScene);
     mainStage.show();
   }
-
+  
   /**
    * @param args
    */
