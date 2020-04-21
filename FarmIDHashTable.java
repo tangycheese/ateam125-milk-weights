@@ -21,6 +21,7 @@ public class FarmIDHashTable {
    */
   public FarmIDHashTable(int month) {
     
+    
     size = 0;
     //chooses number of days in month based on which month
     switch(month) {
@@ -50,27 +51,43 @@ public class FarmIDHashTable {
   }
   
   /**
-   * inserts new FarmNode and compares with current farmNodes.
+   * inserts the data for a farmNode, or if not present creates a new one, then compares with
+   * existing farmNodes for size. 
    * @param farmID - inserts the new FarmNode
    */
-  public void insert(FarmNode farmID) {
-    hashTable.put(farmID.getFarmID(), farmID);
-    
-    updateFarmRankings(farmID);
+  public void insert(String farmID, int day, int weight) {
+    if(hashTable.get(farmID) == null) {
+      System.out.println("here");
+      hashTable.put(farmID, new FarmNode(farmID, DAYS_IN_MONTH));
+      hashTable.get(farmID).addDailyWeight(weight, day);
+      //the first added farm is set as both the largest and smallest one. 
+      if(size == 0) {
+        farmIDWithMostWeightMonthly = farmID;
+        farmIDWithLeastWeightMonthly = farmID;
+      }
+      ++size;
       
+    }
+    
+    //if the farmNode is already in this table, just update the weight. 
+    else {
+    hashTable.get(farmID).addDailyWeight(weight, day);
+    updateFarmRankings(hashTable.get(farmID));
+    }
     
   }
+ 
   /**
    * 
    * @param other
    */
   private void updateFarmRankings(FarmNode farmID) {
     
-    if (farmID.compareTo(hashTable.get(farmIDWithMostWeightMonthly))> 0) {
+    if (farmID.compareToWeights(hashTable.get(farmIDWithMostWeightMonthly))> 0) {
       farmIDWithMostWeightMonthly = farmID.getFarmID();
     }
     
-    else if (farmID.compareTo(hashTable.get(farmIDWithLeastWeightMonthly)) < 0) {
+    else if (farmID.compareToWeights(hashTable.get(farmIDWithLeastWeightMonthly)) < 0) {
       farmIDWithLeastWeightMonthly = farmID.getFarmID();
     }
   }
