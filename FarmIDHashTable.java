@@ -20,8 +20,7 @@ public class FarmIDHashTable {
    * @param month - a month represented by an int - January = 1, Feb = 2, etc.
    */
   public FarmIDHashTable(int month) {
-    
-    
+
     size = 0;
     //chooses number of days in month based on which month
     switch(month) {
@@ -57,7 +56,6 @@ public class FarmIDHashTable {
    */
   public void insert(String farmID, int day, int weight) {
     if(hashTable.get(farmID) == null) {
-      System.out.println("here");
       hashTable.put(farmID, new FarmNode(farmID, DAYS_IN_MONTH));
       hashTable.get(farmID).addDailyWeight(weight, day);
       //the first added farm is set as both the largest and smallest one. 

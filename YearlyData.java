@@ -30,12 +30,40 @@ public class YearlyData {
     public String generateMonthlyStatistics(String month) {
       return null;
     }
-  
+
+
+    public void parseFile(String file){
+        try(BufferedReader reader = new BufferedReader(new FileReader(file));){
+            FarmIDHashTable oneMonth=null;
+            String line=null;
+            int lineNo=1;
+            while((line=reader.readLine())!=null) {
+                if (line.startsWith("date")) {
+                    System.out.println("line "+lineNo +", table header:" + line + ",skiped.");
+                } else {
+                    DataItemEntity item = DataItemEntity.parseFromStr(lineNo,line);
+                    if (item != null) {
+                        if (oneMonth == null) {
+                            oneMonth = new FarmIDHashTable(item.getMonth());
+                        }
+                        oneMonth.insert(item.getFarmID(), item.getDay(), item.getWeight());
+                    }
+                }
+                lineNo++;
+            }
+            allMonths.add(oneMonth);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * 
      * @param file
      */
-    public void parseFile(String file) {
+    public void parseFile2(String file) {
       
       String splitBy = ",";
       String row = "";
@@ -58,9 +86,10 @@ public class YearlyData {
         
         //accesses first row of file - then if it contains "date" skips. 
         oneDay = row.split(splitBy);
-        if(oneDay[0].contentEquals("date"))
-          row = reader.readLine();
-          
+        if(oneDay[0].contentEquals("date")) {
+            row = reader.readLine();
+        }
+
         //now attempts to read the second row. 
         oneDay = row.split(splitBy);
         date = oneDay[0].split("-"); // array of 'date', where date[0] = the year, date[1] = the month, and date[2] = the day.
@@ -124,5 +153,89 @@ public class YearlyData {
       testing.parseFile("2019-1.csv");
       System.out.println(testing.allMonths.get(0).searchForFarm("Farm 2").getTotalWeight());
     }
-  
+
+
+    public static class DataItemEntity {
+        private int year;
+        private int month;
+        private int day;
+        private String farmID;
+        private int weight;
+
+        public DataItemEntity() {
+        }
+
+        public DataItemEntity(int year, int month, int day, String farmID, int weight) {
+
+            this.year = year;
+            this.month = month;
+            this.day = day;
+            this.farmID = farmID;
+            this.weight = weight;
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        public void setYear(int year) {
+            this.year = year;
+        }
+
+        public int getMonth() {
+            return month;
+        }
+
+        public void setMonth(int month) {
+            this.month = month;
+        }
+
+        public int getDay() {
+            return day;
+        }
+
+        public void setDay(int day) {
+            this.day = day;
+        }
+
+        public String getFarmID() {
+            return farmID;
+        }
+
+        public void setFarmID(String farmID) {
+            this.farmID = farmID;
+        }
+
+        public int getWeight() {
+            return weight;
+        }
+
+        public void setWeight(int weight) {
+            this.weight = weight;
+        }
+
+        public static DataItemEntity parseFromStr(int lineNo, String data){
+            try {
+                DataItemEntity item = new DataItemEntity();
+                String[] arr=data.split(",");
+                if(arr.length!=3){
+                    System.err.println("line "+lineNo +",error line:"+data);
+                    return null;
+                }
+                String dateStr = arr[0].trim();
+                item.farmID = arr[1].trim();
+                item.weight = Integer.parseInt(arr[2].trim());
+                String[] dateArr=dateStr.split("[^0-9]+");
+                item.year = Integer.parseInt(dateArr[0].trim());
+                item.month = Integer.parseInt(dateArr[1].trim());
+                item.day = Integer.parseInt(dateArr[2].trim());
+                return item;
+            }catch (Exception e){
+                //e.printStackTrace();
+                System.err.println("line "+lineNo +",error line:"+data);
+                return null;
+            }
+        }
+    }
+
 }

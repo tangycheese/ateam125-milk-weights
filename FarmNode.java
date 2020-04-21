@@ -61,8 +61,8 @@ public class FarmNode implements Comparable {
      * @param milkWeight
      */
     public void replaceDailyWeight(int milkWeight, int day) {
-      milkWeightTotal = milkWeightTotal - dailyMilkWeights[day];
-      dailyMilkWeights[day] = milkWeight;
+      milkWeightTotal = milkWeightTotal - dailyMilkWeights[day-1];
+      dailyMilkWeights[day-1] = milkWeight;
       milkWeightTotal = milkWeightTotal + milkWeight;
     }
 
