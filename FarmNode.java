@@ -51,7 +51,7 @@ public class FarmNode implements Comparable {
      * @param day
      */
     public void addDailyWeight(int milkWeight, int day) {
-      dailyMilkWeights[day] = milkWeight;
+      dailyMilkWeights[day-1] = milkWeight;
       milkWeightTotal = milkWeightTotal + milkWeight;
     }
     
@@ -73,9 +73,21 @@ public class FarmNode implements Comparable {
      * @returns negative if this FarmNode's milkWeight is less than other, positive
      * if this FarmNode's milkWeight is greater than other. 
      */
+    
+    public int compareToWeights(Object other) {
+      return this.milkWeightTotal - ((FarmNode) other).getTotalWeight();
+    }
+    
+    
+    /**
+     * Compares two different farmNodes based on their FarmIDs. 
+     * @param the other FarmNode to compare to. 
+     * @returns negative if this farmID is lexicographically less than the other farmID,
+     * positive if this is greater than the other farmID, and equal if they are the same.
+     */
     @Override
     public int compareTo(Object other) {
-      return this.milkWeightTotal - ((FarmNode) other).getTotalWeight();
+      return this.FARM_ID.compareTo(((FarmNode) other).getFarmID());
     }
 }
 
