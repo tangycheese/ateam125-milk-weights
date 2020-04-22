@@ -76,10 +76,12 @@ public class userInterface extends Application {
    }});
     
     // setup main scene
-    
-    HBox mainTop = new HBox(new Text("Welcome to our milk weights program"));
-    mainTop.setAlignment(Pos.CENTER);
-    mainroot.setTop(mainTop);
+    Text welcomeTxt = new Text("Welcome to our Milk Weights Program! This program allows you to add data of farms' daily added weights through csv files or manual entry. Once data is entered, you can also view statistics based off on entered dates. Use the two buttons below to navigate between the data input and statistics screen.");
+    welcomeTxt.setWrappingWidth(WINDOW_WIDTH/2);
+    welcomeTxt.setFont(new Font(20));
+    HBox mainCenter = new HBox(welcomeTxt);
+    mainCenter.setAlignment(Pos.CENTER);
+    mainroot.setCenter(mainCenter);
     
     HBox mainBtm = new HBox(40);
     mainBtm.setAlignment(Pos.CENTER);
@@ -227,7 +229,7 @@ public class userInterface extends Application {
     startBoxD.setAlignment(Pos.CENTER);
     startBoxD.getChildren().addAll(startDescD,startInputD);
     
-    Text endDescD = new Text("Enter in the ending day (yyyy-mm-dd)");
+    Text endDescD = new Text("Enter in the ending day (mm-dd)");
     TextField endInputD = new TextField();
     HBox endBoxD = new HBox(20);
     endBoxD.setAlignment(Pos.CENTER);
@@ -262,7 +264,7 @@ public class userInterface extends Application {
        dataCenter.getChildren().addAll(currDataType, startBoxD, endBoxD, showDataBtn);
    }});
     
-    //
+
     showDataBtn.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent e) {
         dataCenter.getChildren().clear();
@@ -300,7 +302,7 @@ public class userInterface extends Application {
             Text s12 = new Text();
             r3.getChildren().addAll(s9, s10, s11, s12);
             r3.setAlignment(Pos.CENTER);
-            
+            Text summaryStats = new Text();
             showedData.getChildren().addAll(IDVal, r1, r2,r3);
             
         switch (dataVal) {
@@ -311,82 +313,88 @@ public class userInterface extends Application {
           case 1: // farm report
             dataCenter.getChildren().addAll(currDataType, farmBoxD, yearBoxD, showDataBtn, showedData);
             IDVal.setText("Farm #" + farmInputD.getText() + " Year: " + yearInputD.getText());
-            s1.setText("jan: totalweight, percent");
-            s2.setText("feb: totalweight, percent");
-            s3.setText("mar: totalweight, percent");
-            s4.setText("apr: totalweight, percent");
+            s1.setText("jan: 3253, 8.33");
+            s2.setText("feb: 3253, 8.33");
+            s3.setText("mar: 3253, 8.33");
+            s4.setText("apr: 3253, 8.33");
             
-            s5.setText("may: totalweight, percent");
-            s6.setText("jun: totalweight, percent");
-            s7.setText("jul: totalweight, percent");
-            s8.setText("aug: totalweight, percent");
+            s5.setText("may: 3253, 8.33");
+            s6.setText("jun: 3253, 8.33");
+            s7.setText("jul: 3253, 8.33");
+            s8.setText("aug: 3253, 8.33");
             
-            s9.setText("sep: totalweight, percent");
-            s10.setText("oct: totalweight, percent");
-            s11.setText("nov: totalweight, percent");
-            s12.setText("dec: totalweight, percent");
-            Text farmYear = new Text("year total,     year percent:");
-            showedData.getChildren().add(farmYear);
+            s9.setText("sep: 3253, 8.33");
+            s10.setText("oct: 3253, 8.33");
+            s11.setText("nov: 3253, 8.33");
+            s12.setText("dec: 3253, 8.33");
+            summaryStats.setText("year total: 45354 year min: 43  year max: 5234 year avg: 3323");
+            showedData.getChildren().add(summaryStats);
             dataRoot.setRight(null);
             dataRoot.setLeft(null);
             break;
           case 2: // annual report
             dataCenter.getChildren().addAll(currDataType, yearBoxD, showDataBtn, showedData);
             IDVal.setText("Year: " + yearInputD.getText());
-            s1.setText("farm: totalweight, percent");
-            s2.setText("farm: totalweight, percent");
-            s3.setText("farm: totalweight, percent");
-            s4.setText("farm: totalweight, percent");
+            s1.setText("farm: 3253, 8.33");
+            s2.setText("farm: 3253, 8.33");
+            s3.setText("farm: 3253, 8.33");
+            s4.setText("farm: 3253, 8.33");
             
-            s5.setText("farm: totalweight, percent");
-            s6.setText("farm: totalweight, percent");
-            s7.setText("farm: totalweight, percent");
-            s8.setText("farm: totalweight, percent");
+            s5.setText("farm: 3253, 8.33");
+            s6.setText("farm: 3253, 8.33");
+            s7.setText("farm: 3253, 8.33");
+            s8.setText("farm: 3253, 8.33");
             
-            s9.setText("farm: totalweight, percent");
-            s10.setText("farm: totalweight, percent");
-            s11.setText("farm: totalweight, percent");
-            s12.setText("farm: totalweight, percent");
+            s9.setText("farm: 3253, 8.33");
+            s10.setText("farm: 3253, 8.33");
+            s11.setText("farm: 3253, 8.33");
+            s12.setText("farm: 3253, 8.33");
+            summaryStats.setText("year total: 45354 year min: 43  year max: 5234 year avg: 3323");
+            showedData.getChildren().add(summaryStats);
             dataRoot.setRight(nextFarms);
             dataRoot.setLeft(lastFarms);
             break;
           case 3: // month report
             dataCenter.getChildren().addAll(currDataType, monthBoxD, yearBoxD, showDataBtn, showedData);
             IDVal.setText("Month: " + monthInputD.getText() + " Year: " + yearInputD.getText());
-            s1.setText("farm: totalweight, percent");
-            s2.setText("farm: totalweight, percent");
-            s3.setText("farm: totalweight, percent");
-            s4.setText("farm: totalweight, percent");
+            s1.setText("farm: 3253, 8.33");
+            s2.setText("farm: 3253, 8.33");
+            s3.setText("farm: 3253, 8.33");
+            s4.setText("farm: 3253, 8.33");
             
-            s5.setText("farm: totalweight, percent");
-            s6.setText("farm: totalweight, percent");
-            s7.setText("farm: totalweight, percent");
-            s8.setText("farm: totalweight, percent");
+            s5.setText("farm: 3253, 8.33");
+            s6.setText("farm: 3253, 8.33");
+            s7.setText("farm: 3253, 8.33");
+            s8.setText("farm: 3253, 8.33");
             
-            s9.setText("farm: totalweight, percent");
-            s10.setText("farm: totalweight, percent");
-            s11.setText("farm: totalweight, percent");
-            s12.setText("farm: totalweight, percent");
+            s9.setText("farm: 3253, 8.33");
+            s10.setText("farm: 3253, 8.33");
+            s11.setText("farm: 3253, 8.33");
+            s12.setText("farm: 3253, 8.33");
+            summaryStats.setText("total: 45354 min: 43  max: 5234 avg: 3323");
+            showedData.getChildren().add(summaryStats);
             dataRoot.setRight(nextFarms);
             dataRoot.setLeft(lastFarms);
             break;
           case 4: // date report
             dataCenter.getChildren().addAll(currDataType, startBoxD, endBoxD, showDataBtn, showedData);
-            IDVal.setText("start day:    end day:");
-            s1.setText("farm: totalweight, percent");
-            s2.setText("farm: totalweight, percent");
-            s3.setText("farm: totalweight, percent");
-            s4.setText("farm: totalweight, percent");
+            IDVal.setText("start day: " + startInputD.getText() + " end day: " + endInputD.getText());
+            s1.setText("farm: 3253, 8.33");
+            s2.setText("farm: 3253, 8.33");
+            s3.setText("farm: 3253, 8.33");
+            s4.setText("farm: 3253, 8.33");
             
-            s5.setText("farm: totalweight, percent");
-            s6.setText("farm: totalweight, percent");
-            s7.setText("farm: totalweight, percent");
-            s8.setText("farm: totalweight, percent");
+            s5.setText("farm: 3253, 8.33");
+            s6.setText("farm: 3253, 8.33");
+            s7.setText("farm: 3253, 8.33");
+            s8.setText("farm: 3253, 8.33");
             
-            s9.setText("farm: totalweight, percent");
-            s10.setText("farm: totalweight, percent");
-            s11.setText("farm: totalweight, percent");
-            s12.setText("farm: totalweight, percent");
+            s9.setText("farm: 3253, 8.33");
+            s10.setText("farm: 3253, 8.33");
+            s11.setText("farm: 3253, 8.33");
+            s12.setText("farm: 3253, 8.33");
+            summaryStats.setText("total weight: 3432 min: 342  max: 2353  avg: 2222");
+            showedData.getChildren().add(summaryStats);
             dataRoot.setRight(nextFarms);
             dataRoot.setLeft(lastFarms);
             break;
