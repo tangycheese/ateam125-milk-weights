@@ -14,13 +14,15 @@ public class FarmIDHashTable {
   private String farmIDWithMostWeightMonthly;
   private String farmIDWithLeastWeightMonthly;
   private HashMap<String, FarmNode> hashTable; // holds
+  private int month;
   
   /**
    * Initializes a new FarmIDHashTable for a given month
    * @param month - a month represented by an int - January = 1, Feb = 2, etc.
    */
   public FarmIDHashTable(int month) {
-
+    
+    
     size = 0;
     //chooses number of days in month based on which month
     switch(month) {
@@ -44,6 +46,8 @@ public class FarmIDHashTable {
         break;
         default: DAYS_IN_MONTH = 0;
     }
+    
+    this.month = month;
     
     hashTable = new HashMap<String, FarmNode>();
     

@@ -1,7 +1,10 @@
 public class StatisticEntity {
+  
     private String date;
     private String farmId;
     private Integer weight;
+    private int month; 
+    private double percent; 
 
     public StatisticEntity() {
 
@@ -36,4 +39,21 @@ public class StatisticEntity {
     public void setWeight(Integer weight) {
         this.weight = weight;
     }
+    
+    public int getMonth() {
+      return month;
+    }
+    
+    public void setMonth(int month) {
+      this.month = month;
+    }
+    
+    public double getPercent() {
+      return percent;
+    }
+    
+    public void setPercent(double percent) {
+      this.percent = percent;
+    }
+    
 }
