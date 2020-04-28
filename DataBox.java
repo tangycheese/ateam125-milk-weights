@@ -1,8 +1,8 @@
 import java.util.*;
 
 /**
- * 三个维度：
- * 日期  farmid  weight
+ * three dimensions：
+ * date  farmid  weight
  */
 public class DataBox {
     public static class Data{
