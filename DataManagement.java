@@ -3,7 +3,7 @@ import java.util.*;
 public class DataManagement{
 
   /**
-   * key1: 年月日
+   * key1: year month date
    * key2: farmid
    */
   private TreeMap<String,Map<String, SumByDayEntity>> allData=new TreeMap<>();
@@ -49,7 +49,7 @@ public class DataManagement{
     for (int mon = 1; mon <=12 ; mon++) {
       String startDay = DateUtil.getFirstDayStr(year,mon);
       String endDay= DateUtil.getEndDayStr(year,mon);
-      //一个月的所有数据都得到了
+      //get the data for a month
       SortedMap<String,Map<String, SumByDayEntity>> oneMonthData=allData.subMap(startDay,endDay);
       //farmid,collection
       DataBox dataBox=new DataBox();
