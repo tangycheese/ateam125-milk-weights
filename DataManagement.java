@@ -1,89 +1,117 @@
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-public class DataManagement implements DataManagementADT{
+public class DataManagement{
 
-   private LinkedList<YearlyData> allYears;
-  
-   public DataManagement() {}
-  
   /**
-  * searches for the information user wants from the data
-  * @param String userInput input from user
-  */
-  public String search(String userInput) {
-    return null;
+   * key1: 年月日
+   * key2: farmid
+   */
+  private TreeMap<String,Map<String, SumByDayEntity>> allData=new TreeMap<>();
+
+
+  public DataManagement() {}
+
+
+
+  public TreeSet<SumByYearEntity> getStatisticsByYearAndFarmId(
+          Integer year,String farmId) {
+    TreeSet<SumByYearEntity> treeSet=new TreeSet<>();
+
+    return treeSet;
   }
 
   /**
    *
+   * @param year
+   * @param asc
+   *  if asc is null: sorted by farmid!
+   *     asc is true: sorted by weight  asc
+   *     asc is false: sorted by weight desc
    * @return
-   *    2019-01  1020001
-   *    2019-02  100002
    */
-  public List<StatisticEntity> getStatisticsByOneMonth() {
+  public TreeSet<StatisticEntityByYear> getStatisticsByYearAndFarmId(
+          Integer year,Boolean asc) {
+    StatisticEntityByYear.ASC=asc;
+    TreeSet<StatisticEntityByYear> treeSet=new TreeSet<>();
+
+
     return null;
   }
 
-  /**
-   *
-   * @param minMonth 2019-01
-   * @param maxMonth 2019-12
-   * @return
-   *    2019-01 f01  1020001
-   *    2019-01 f02  1020031
-   *    2019-02 f01  100002
-   */
-  public List<StatisticEntity> getStatisticsByMonthAndFarmId(String minMonth,String maxMonth,String farmId) {
-    return null;
+
+
+  public TreeSet<SumByMonthEntity> getStatisticsByYearAndFarmId(
+          Integer year,Integer month,Boolean asc) {
+    SumByMonthEntity.ASC=asc;
+
+    TreeSet<SumByMonthEntity> returnResult=new TreeSet<>();
+
+    for (int mon = 1; mon <=12 ; mon++) {
+      String startDay = DateUtil.getFirstDayStr(year,mon);
+      String endDay= DateUtil.getEndDayStr(year,mon);
+      //一个月的所有数据都得到了
+      SortedMap<String,Map<String, SumByDayEntity>> oneMonthData=allData.subMap(startDay,endDay);
+      //farmid,collection
+      DataBox dataBox=new DataBox();
+      //put data to databox!
+      for(String day:oneMonthData.keySet()){
+        for(SumByDayEntity oneFarmInOneDay:oneMonthData.get(day).values()){
+           dataBox.addItem(oneFarmInOneDay.getYYYYMMDate(),oneFarmInOneDay.getFarmId(),oneFarmInOneDay.getWeight());
+        }
+      }
+
+      Map<String, DataBox.SumDate> boxResult=dataBox.sumByFarmId();
+      for(String farmId:boxResult.keySet()){
+        DataBox.SumDate oneFarmResult=boxResult.get(farmId);
+        SumByMonthEntity oneFarmReturnValue
+                =new SumByMonthEntity(farmId,year,mon,boxResult.get(farmId).weight);
+        oneFarmReturnValue.setAllFarmIdWeight(dataBox.getTotalWeight());
+        returnResult.add(oneFarmReturnValue);
+      }
+
+    }
+
+    return returnResult;
   }
 
-  /**
-   *
-   * @param minDay 2019/01/01
-   * @param maxDay 2019/02/28
-   * @return
-   *    2019/01/01-2019/02/28  f01  1020001
-   *    2019/01/01-2019/02/28  f02  1020031
-   */
-  public List<StatisticEntity> getStatisticsByFarmId(String minDay,String maxDay) {
-     return null;
+
+  public TreeSet<SumByDayEntity> getStatisticsByStartAndEndDay(
+          String startDay,String endDay,Boolean asc) {
+    SumByDayEntity.ASC=asc;
+    TreeSet<SumByDayEntity> treeSet=new TreeSet<>();
+    SortedMap<String,Map<String, SumByDayEntity>> targetData=allData.subMap(startDay,endDay);
+    for(String day:targetData.keySet()){
+        Collection<SumByDayEntity> allFarmInOneDay = targetData.get(day).values();
+        int allFarmIdWeight = computeSumWeight( allFarmInOneDay );
+        for(SumByDayEntity item:allFarmInOneDay){
+            item.setAllFarmIdWeight(allFarmIdWeight);
+            treeSet.add(item);
+        }
+    }
+    return treeSet;
+  }
+
+  private int computeSumWeight(Collection<SumByDayEntity> allFarmInOneDay) {
+      int sum=0;
+      for (SumByDayEntity item :
+              allFarmInOneDay) {
+        sum+=item.getWeight();
+      }
+    return sum;
   }
 
 
+  //load file to allData
+  public void loadData(String file){
+    ParseFileUtil testing = new ParseFileUtil();
+    TreeMap<String,Map<String, SumByDayEntity>> fileData=testing.parseFile(file);
+    allData.putAll(fileData);
+  }
+
+
+  public void clearData(){
+      allData.clear();
+  }
   
-  /**
-  * put all the data in a specific year
-  * @param String year year to add data to
-  */
-  public void createOneYearsData(String year) {
 
-  }
-  
-  /**
-  * outputs the statistics into files
-  * @param File file to load statistics to
-  */
-  public File generateFile(File file) {
-    return null;
-  }
-  
-  /**
-  * Gives the relevant information for a given month, such as
-  * which farm produced the least and most milk
-  * @param String month statistics for that month
-  */
-  private String getMonthlyStatistics(String month) {
-    return null;
-  }
-  
-  /**
-  * Gives the relevant information for a given year such as
-  * total milk produced
-  * @param String timePeriod
-  */
-  private String generateYearlyStatistics(String timePeriod) {
-    return null;
-  }
 }
