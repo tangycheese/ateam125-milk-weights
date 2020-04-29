@@ -23,10 +23,11 @@ public class SumByYearEntity implements
         return weight/allMonthWeight;
     }
 
-    public SumByYearEntity(String farmId, Integer year, Integer month) {
+    public SumByYearEntity(String farmId, Integer year, Integer month,Integer weight) {
         this.farmId=farmId;
         this.year=year;
         this.month=month;
+        this.weight=weight;
     }
 
     public String getFarmId() {
@@ -72,6 +73,22 @@ public class SumByYearEntity implements
 
     @Override
     public int compareTo(SumByYearEntity other) {
-        return this.month.compareTo(other.month);
+        int result= this.month.compareTo(other.month);
+        if(result==0){
+            result = this.farmId.compareTo(other.farmId);
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SumByYearEntity{" +
+                "farmId='" + farmId + '\'' +
+                ", year=" + year +
+                ", month=" + month +
+                ", weight=" + weight +
+                ", allFarmIdWeight=" + allFarmIdWeight +
+                ", allMonthWeight=" + allMonthWeight +
+                '}';
     }
 }

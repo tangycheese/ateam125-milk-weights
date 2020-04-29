@@ -17,9 +17,10 @@ public class StatisticEntityByYear implements Comparable<StatisticEntityByYear>{
         return weight/allFarmIdWeight;
     }
 
-    public StatisticEntityByYear(String farmId,Integer year) {
+    public StatisticEntityByYear(String farmId,Integer year,Integer weight) {
         this.farmId=farmId;
         this.year=year;
+        this.weight=weight;
     }
 
     public String getFarmId() {
@@ -66,5 +67,15 @@ public class StatisticEntityByYear implements Comparable<StatisticEntityByYear>{
             result=this.farmId.compareTo(other.farmId);
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StatisticEntityByYear{" +
+                "farmId='" + farmId + '\'' +
+                ", year=" + year +
+                ", weight=" + weight +
+                ", allFarmIdWeight=" + allFarmIdWeight +
+                '}';
     }
 }

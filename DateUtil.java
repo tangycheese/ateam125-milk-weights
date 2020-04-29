@@ -37,10 +37,19 @@ public class DateUtil {
         return getYYYYMMDDDate(year,mon,getLastDayOfMonth(year,mon));
     }
 
+    public static String getFirstDayStrByYear(Integer year) {
+        return getFirstDayStr(year,1);
+    }
+
+    public static String getEndDayStrByYear(Integer year) {
+        return getEndDayStr(year,12);
+    }
+
     public static String getYYYYMMDate(int year,int month){
         return String.format("%04d%02d",year,month);
     }
     public static String getYYYYMMDDDate(int year,int month,int day){
         return String.format("%04d%02d%02d",year,month,day);
     }
+
 }
