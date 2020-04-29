@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 public class DataManagementTest {
     @Test
-    public void testGetStatistics04(){
+    public void testGetStatisticsDATERANGEREPORT(){
         DataManagement dataManagement=new DataManagement();
         dataManagement.loadData("C:\\wps网盘同步文件夹\\高祈\\2020年4月28日\\ateam125-milk-weights-master\\test01.csv");
         TreeSet<SumByDayEntity> result= dataManagement.getStatistics04("20190401","20190403",false);
@@ -24,7 +24,7 @@ public class DataManagementTest {
     }
 
     @Test
-    public void testGetStatistics01(){
+    public void testGetStatisticsFARMREPORT(){
         DataManagement dataManagement=new DataManagement();
         for (int i = 1; i <= 12; i++) {
             dataManagement.loadData("C:\\wps网盘同步文件夹\\高祈\\java_2020年4月21日\\csv\\small\\2019-"+i+".csv");
@@ -36,7 +36,7 @@ public class DataManagementTest {
     }
 
     @Test
-    public void testGetStatistics02(){
+    public void testGetStatisticsANNUALREPORT(){
         DataManagement dataManagement=new DataManagement();
         for (int i = 1; i <= 12; i++) {
             dataManagement.loadData("C:\\wps网盘同步文件夹\\高祈\\java_2020年4月21日\\csv\\small\\2019-"+i+".csv");
