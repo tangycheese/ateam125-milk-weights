@@ -3,7 +3,7 @@ import java.util.*;
 public class DataManagement{
 
   /**
-   * key1: 年月日
+   * key1: year month date
    * key2: farmid
    */
   private TreeMap<String,Map<String, SumByDayEntity>> allData=new TreeMap<>();
@@ -13,7 +13,7 @@ public class DataManagement{
 
 
 
-  public TreeSet<SumByYearEntity> getStatistics01(
+  public TreeSet<SumByYearEntity> getStatisticsFARMREPORT(
           Integer year,String farmId) {
     TreeSet<SumByYearEntity> treeSet=new TreeSet<>();
 
@@ -56,7 +56,7 @@ public class DataManagement{
    *     asc is false: sorted by weight desc
    * @return
    */
-  public TreeSet<StatisticEntityByYear> getStatistics02(
+  public TreeSet<StatisticEntityByYear> getStatisticsANNUALREPORT(
           Integer year,Boolean asc) {
     StatisticEntityByYear.ASC=asc;
     TreeSet<StatisticEntityByYear> treeSet=new TreeSet<>();
@@ -82,7 +82,7 @@ public class DataManagement{
 
 
 
-  public TreeSet<SumByMonthEntity> getStatistics03(
+  public TreeSet<SumByMonthEntity> getStatisticsMONTHLYREPORT(
           Integer year,Integer month,Boolean asc) {
     SumByMonthEntity.ASC=asc;
 
@@ -91,7 +91,7 @@ public class DataManagement{
     for (int mon = 1; mon <=12 ; mon++) {
       String startDay = DateUtil.getFirstDayStr(year,mon);
       String endDay= DateUtil.getEndDayStr(year,mon);
-      //一个月的所有数据都得到了
+      //get all month data
       SortedMap<String,Map<String, SumByDayEntity>> oneMonthData=allData.subMap(startDay,endDay);
       //farmid,collection
       DataBox dataBox=new DataBox();
@@ -117,7 +117,7 @@ public class DataManagement{
   }
 
 
-  public TreeSet<SumByDayEntity> getStatistics04(
+  public TreeSet<SumByDayEntity> getStatisticsDATERANGEREPORT(
           String startDay,String endDay,Boolean asc) {
     SumByDayEntity.ASC=asc;
     TreeSet<SumByDayEntity> treeSet=new TreeSet<>();
