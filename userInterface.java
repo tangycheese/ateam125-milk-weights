@@ -287,7 +287,9 @@ public class userInterface extends Application {
         dataCenter.getChildren().clear();
         VBox showedData = new VBox(15);
         showedData.setAlignment(Pos.CENTER);
-        
+        if (dm.dataLoaded() == false) {
+          dataVal = 0;
+        }
         // add buttons to change between sets of farms
         VBox nextFarms = new VBox(15);
         nextFarms.setAlignment(Pos.CENTER);
@@ -324,7 +326,7 @@ public class userInterface extends Application {
             
         switch (dataVal) {
           case 0:
-            dataCenter.getChildren().add(new Text("No command recognized"));
+            dataCenter.getChildren().add(new Text("You have not inputted any data to display yet in the change data screen"));
             break;
             // temporary for display purposes
           case 1: // farm report
@@ -360,15 +362,17 @@ public class userInterface extends Application {
             
           case 2: // annual report
             dataCenter.getChildren().addAll(currDataType, yearBoxD, showDataBtn, showedData);
-            IDVal.setText("Year: " + yearInputD.getText());
+            
             TreeSet<StatisticEntityByYear> treeset = new TreeSet<StatisticEntityByYear>();
             try {
               Integer year = Integer.parseInt(yearInputD.getText());
               treeset = dm.getStatisticsANNUALREPORT(year, null);
             }catch (Exception err) {
+              IDVal.setText("Error in inputting data");
               break;
             }
             
+            IDVal.setText("Year: " + yearInputD.getText());
             int i = 0;
             for (StatisticEntityByYear data: treeset) {  
               if(i == 0)  {
