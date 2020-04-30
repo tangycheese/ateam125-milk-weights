@@ -33,8 +33,11 @@ public class SumByDayEntity implements Comparable<SumByDayEntity>{
     private Integer allFarmIdWeight;
 
     //maybe show In View
-    public double getPercentInAllFarmIdWeight(){
-        return 1.0*weight/allFarmIdWeight;
+    public String getPercentInAllFarmIdWeight(){
+      double percent = ((double)100) * ((double) weight) / ((double) allFarmIdWeight);
+      String trimmedPercent = percent + "";
+      trimmedPercent = trimmedPercent.substring(0, 4);
+      return trimmedPercent;
     }
 
     public SumByDayEntity(String farmId, Integer year) {

@@ -16,11 +16,18 @@ public class SumByYearEntity implements
     private Integer allMonthWeight;
 
     //maybe show In View
-    public double getPercentInAllFarmIdWeight(){
-        return weight/allFarmIdWeight;
+    public String getPercentInAllFarmIdWeight(){
+      double percent = ((double)100) * ((double) weight) / ((double) allFarmIdWeight);
+      String trimmedPercent = percent + "";
+      trimmedPercent = trimmedPercent.substring(0, 4);
+      return trimmedPercent;
     }
-    public double getPercentInAllMonthWeight(){
-        return weight/allMonthWeight;
+    
+    public String getPercentInAllMonthWeight(){
+      double percent = ((double)100) * ((double) weight) / ((double) allMonthWeight);
+      String trimmedPercent = percent + "";
+      trimmedPercent = trimmedPercent.substring(0, 4);
+      return trimmedPercent;
     }
 
     public SumByYearEntity(String farmId, Integer year, Integer month,Integer weight) {

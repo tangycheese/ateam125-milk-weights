@@ -15,8 +15,11 @@ public class SumByRangeDateEntity implements
     private Integer allFarmIdWeight;
 
     //maybe show In View
-    public double getPercentInAllFarmIdWeight(){
-        return weight/allFarmIdWeight;
+    public String getPercentInAllFarmIdWeight(){
+      double percent = ((double)100) * ((double) weight) / ((double) allFarmIdWeight);
+      String trimmedPercent = percent + "";
+      trimmedPercent = trimmedPercent.substring(0, 4);
+      return trimmedPercent;
     }
 
     public SumByRangeDateEntity(String farmId, String date, Integer weight, Integer allFarmIdWeight) {

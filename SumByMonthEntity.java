@@ -32,8 +32,11 @@ public class SumByMonthEntity implements Comparable<SumByMonthEntity>{
     }
 
     //maybe show In View
-    public double getPercentInAllFarmIdWeight(){
-        return 1.0*weight/allFarmIdWeight;
+    public String getPercentInAllFarmIdWeight(){
+      double percent = ((double)100) * ((double) weight) / ((double) allFarmIdWeight);
+      String trimmedPercent = percent + "";
+      trimmedPercent = trimmedPercent.substring(0, 4);
+      return trimmedPercent;
     }
 
     public SumByMonthEntity(String farmId, Integer year, Integer month, Integer weight) {
