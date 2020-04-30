@@ -60,7 +60,6 @@ public class DateUtil {
         int month=Integer.parseInt(yearMonthDay.substring(4,6));
         int day=Integer.parseInt(yearMonthDay.substring(6,8));
         LocalDate date=LocalDate.of(year,month,day);
-        date=date.plusDays(dayCount);
         String result=date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         return result;
     }
