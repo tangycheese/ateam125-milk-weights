@@ -1,3 +1,4 @@
+
 /**
  * creates user interface for milk weights program
  *
@@ -10,7 +11,7 @@ package application;
 
 import java.io.FileInputStream;
 import java.util.List;
-
+import java.util.TreeSet;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,6 +43,8 @@ public class userInterface extends Application {
   
   // retain which command is being used in show data screen, 0 = none, 1 = farm, 2 = annual, 3 = monthly, 4 = date range
   private int dataVal = 0;
+  private DataManagement dm = new DataManagement();
+  
   
   @Override
   public void start(Stage mainStage) throws Exception {
@@ -152,6 +155,8 @@ public class userInterface extends Application {
     fileInBox.setAlignment(Pos.CENTER);
     fileInBox.getChildren().addAll(fileInDesc,fileInput);
     
+    Text inputConfirm = new Text("File inputted");
+    
       
     addData.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent e) {
@@ -177,11 +182,19 @@ public class userInterface extends Application {
        currInputType.setText("Inputting a file as data");
        inputCenter.getChildren().addAll(currInputType, fileInBox, processBtn);
    }});
-    
+    processBtn.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e) {
+       inputCenter.getChildren().clear();
+       currInputType.setText("Inputting a file as data");
+       dm.loadData(fileInput.getText());
+       inputCenter.getChildren().addAll(currInputType, fileInBox, processBtn, inputConfirm);
+   }});
     
     HBox alterBtm = new HBox(toMainBtn);
     alterBtm.setAlignment(Pos.CENTER);
     alterRoot.setBottom(alterBtm);
+    
+    
     
     
     //setup scene to display data
@@ -317,7 +330,15 @@ public class userInterface extends Application {
             // temporary for display purposes
           case 1: // farm report
             dataCenter.getChildren().addAll(currDataType, farmBoxD, yearBoxD, showDataBtn, showedData);
+            
             IDVal.setText("Farm #" + farmInputD.getText() + " Year: " + yearInputD.getText());
+            try {
+              Integer year = Integer.parseInt(yearInputD.getText());
+              TreeSet treeset = dm.getStatisticsFARMREPORT(year, farmInputD.getText());
+            }catch (Exception err) {
+              break;
+            }
+            
             s1.setText("jan: 3253, 8.33");
             s2.setText("feb: 3253, 8.33");
             s3.setText("mar: 3253, 8.33");
