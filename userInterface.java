@@ -7,7 +7,6 @@
  * @author Doran Redlich
  * @author Qi Gao
  */
-package application;
 
 import java.io.FileInputStream;
 import java.util.List;
@@ -358,25 +357,52 @@ public class userInterface extends Application {
             dataRoot.setRight(null);
             dataRoot.setLeft(null);
             break;
+            
           case 2: // annual report
             dataCenter.getChildren().addAll(currDataType, yearBoxD, showDataBtn, showedData);
             IDVal.setText("Year: " + yearInputD.getText());
-            s1.setText("farm: 3253, 8.33");
-            s2.setText("farm: 3253, 8.33");
-            s3.setText("farm: 3253, 8.33");
-            s4.setText("farm: 3253, 8.33");
+            TreeSet<StatisticEntityByYear> treeset = new TreeSet<StatisticEntityByYear>();
+            try {
+              Integer year = Integer.parseInt(yearInputD.getText());
+              treeset = dm.getStatisticsANNUALREPORT(year, null);
+            }catch (Exception err) {
+              break;
+            }
             
-            s5.setText("farm: 3253, 8.33");
-            s6.setText("farm: 3253, 8.33");
-            s7.setText("farm: 3253, 8.33");
-            s8.setText("farm: 3253, 8.33");
-            
-            s9.setText("farm: 3253, 8.33");
-            s10.setText("farm: 3253, 8.33");
-            s11.setText("farm: 3253, 8.33");
-            s12.setText("farm: 3253, 8.33");
-            summaryStats.setText("year total: 45354 year min: 43  year max: 5234 year avg: 3323");
-            showedData.getChildren().add(summaryStats);
+            int i = 0;
+            for (StatisticEntityByYear data: treeset) {  
+              if(i == 0)  {
+                r1.getChildren().set(i, new Label("FarmID: " + data.getFarmId() + ", Weight: " + 
+                    data.getWeight() + ", Percent: " + data.getPercentInAllFarmIdWeight()));
+              }
+              
+              if(i == 1) {
+                r2.getChildren().set(i, new Label("FarmID: " + data.getFarmId() + ", Weight: " + 
+                    data.getWeight() + ", Percent: " + data.getPercentInAllFarmIdWeight()));
+              }
+              if(i == 2) {
+                r3.getChildren().set(i, new Label("FarmID: " + data.getFarmId() + ", Weight: " + 
+                    data.getWeight() + ", Percent: " + data.getPercentInAllFarmIdWeight()));
+              }
+              i++;
+              
+            }
+//            s1.setText("farm: 3253, 8.33");
+//            s2.setText("farm: 3253, 8.33");
+//            s3.setText("farm: 3253, 8.33");
+//            s4.setText("farm: 3253, 8.33");
+//            
+//            s5.setText("farm: 3253, 8.33");
+//            s6.setText("farm: 3253, 8.33");
+//            s7.setText("farm: 3253, 8.33");
+//            s8.setText("farm: 3253, 8.33");
+//            
+//            s9.setText("farm: 3253, 8.33");
+//            s10.setText("farm: 3253, 8.33");
+//            s11.setText("farm: 3253, 8.33");
+//            s12.setText("farm: 3253, 8.33");
+//            summaryStats.setText("year total: 45354 year min: 43  year max: 5234 year avg: 3323");
+//            showedData.getChildren().add(summaryStats);
             dataRoot.setRight(nextFarms);
             dataRoot.setLeft(lastFarms);
             break;
