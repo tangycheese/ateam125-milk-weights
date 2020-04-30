@@ -118,18 +118,23 @@ public class DataManagement{
   }
 
 
-  public TreeSet<SumByDayEntity> getStatisticsDATERANGEREPORT(
+  public TreeSet<SumByRangeDateEntity> getStatisticsDATERANGEREPORT(
           String startDay,String endDay,Boolean asc) {
+    endDay=DateUtil.getAddDaysStr(endDay,1);
     SumByDayEntity.ASC=asc;
-    TreeSet<SumByDayEntity> treeSet=new TreeSet<>();
+    TreeSet<SumByRangeDateEntity> treeSet=new TreeSet<>(); //[startDay,endDay)
     SortedMap<String,Map<String, SumByDayEntity>> targetData=allData.subMap(startDay,endDay);
+    DataBox dataBox =new DataBox();
     for(String day:targetData.keySet()){
         Collection<SumByDayEntity> allFarmInOneDay = targetData.get(day).values();
-        int allFarmIdWeight = computeSumWeight( allFarmInOneDay );
         for(SumByDayEntity item:allFarmInOneDay){
-            item.setAllFarmIdWeight(allFarmIdWeight);
-            treeSet.add(item);
+            dataBox.addItem("",item.getFarmId(),item.getWeight());
         }
+    }
+    Map<String, DataBox.SumDate> result=dataBox.sumByFarmId();
+    for(String farmId:result.keySet()){
+      DataBox.SumDate item=result.get(farmId);
+      treeSet.add(new SumByRangeDateEntity(farmId,startDay+"-"+endDay,item.weight,dataBox.getTotalWeight()));
     }
     return treeSet;
   }
