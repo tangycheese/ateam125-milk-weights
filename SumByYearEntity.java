@@ -19,14 +19,14 @@ public class SumByYearEntity implements
     public String getPercentInAllFarmIdWeight(){
       double percent = ((double)100) * ((double) weight) / ((double) allFarmIdWeight);
       String trimmedPercent = percent + "";
-      trimmedPercent = trimmedPercent.substring(0, 4);
+      trimmedPercent = trimmedPercent.substring(0, 5);
       return trimmedPercent;
     }
     
     public String getPercentInAllMonthWeight(){
       double percent = ((double)100) * ((double) weight) / ((double) allMonthWeight);
       String trimmedPercent = percent + "";
-      trimmedPercent = trimmedPercent.substring(0, 4);
+      trimmedPercent = trimmedPercent.substring(0, 5);
       return trimmedPercent;
     }
 

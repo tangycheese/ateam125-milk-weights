@@ -36,7 +36,7 @@ public class SumByDayEntity implements Comparable<SumByDayEntity>{
     public String getPercentInAllFarmIdWeight(){
       double percent = ((double)100) * ((double) weight) / ((double) allFarmIdWeight);
       String trimmedPercent = percent + "";
-      trimmedPercent = trimmedPercent.substring(0, 4);
+      trimmedPercent = trimmedPercent.substring(0, 5);
       return trimmedPercent;
     }
 
