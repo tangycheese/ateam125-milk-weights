@@ -1,3 +1,5 @@
+
+package application;
 import java.util.*;
 
 public class DataManagement{
@@ -7,7 +9,7 @@ public class DataManagement{
    * key2: farmid
    */
   private TreeMap<String,Map<String, SumByDayEntity>> allData=new TreeMap<>();
-
+  private boolean hasData = false;
 
   public DataManagement() {}
 
@@ -112,7 +114,6 @@ public class DataManagement{
       }
 
     }
-
     return returnResult;
   }
 
@@ -148,6 +149,7 @@ public class DataManagement{
     ParseFileUtil testing = new ParseFileUtil();
     TreeMap<String,Map<String, SumByDayEntity>> fileData=testing.parseFile(file);
     allData.putAll(fileData);
+    hasData = true;
   }
 
 
@@ -155,5 +157,8 @@ public class DataManagement{
       allData.clear();
   }
   
+  public boolean dataLoaded() {
+    return hasData;
+  }
 
 }
