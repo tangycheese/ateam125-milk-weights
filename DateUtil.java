@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class DateUtil {
     private static int getLastDayOfMonth(int year,int month){
         int DAYS_IN_MONTH=0;
@@ -52,4 +55,13 @@ public class DateUtil {
         return String.format("%04d%02d%02d",year,month,day);
     }
 
+    public static String getAddDaysStr(String yearMonthDay,int dayCount) {
+        int year=Integer.parseInt(yearMonthDay.substring(0,4));
+        int month=Integer.parseInt(yearMonthDay.substring(4,6));
+        int day=Integer.parseInt(yearMonthDay.substring(6,8));
+        LocalDate date=LocalDate.of(year,month,day);
+        date=date.plusDays(dayCount);
+        String result=date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return result;
+    }
 }

@@ -4,11 +4,11 @@ import java.util.TreeSet;
 
 public class DataManagementTest {
     @Test
-    public void testGetStatisticsDATERANGEREPORT(){
+    public void testGetStatistics04(){
         DataManagement dataManagement=new DataManagement();
         dataManagement.loadData("C:\\wps网盘同步文件夹\\高祈\\2020年4月28日\\ateam125-milk-weights-master\\test01.csv");
-        TreeSet<SumByDayEntity> result= dataManagement.getStatistics04("20190401","20190403",false);
-        for(SumByDayEntity minSumEntity:result){
+        TreeSet<SumByRangeDateEntity> result= dataManagement.getStatistics04("20190401","20190403",false);
+        for(SumByRangeDateEntity minSumEntity:result){
             System.out.println(minSumEntity);
         }
     }
@@ -24,7 +24,7 @@ public class DataManagementTest {
     }
 
     @Test
-    public void testGetStatisticsFARMREPORT(){
+    public void testGetStatistics01(){
         DataManagement dataManagement=new DataManagement();
         for (int i = 1; i <= 12; i++) {
             dataManagement.loadData("C:\\wps网盘同步文件夹\\高祈\\java_2020年4月21日\\csv\\small\\2019-"+i+".csv");
@@ -36,7 +36,7 @@ public class DataManagementTest {
     }
 
     @Test
-    public void testGetStatisticsANNUALREPORT(){
+    public void testGetStatistics02(){
         DataManagement dataManagement=new DataManagement();
         for (int i = 1; i <= 12; i++) {
             dataManagement.loadData("C:\\wps网盘同步文件夹\\高祈\\java_2020年4月21日\\csv\\small\\2019-"+i+".csv");
@@ -46,4 +46,18 @@ public class DataManagementTest {
             System.out.println(item);
         }
     }
+
+    @Test
+    public void testGetStatistics04_01(){
+        DataManagement dataManagement=new DataManagement();
+        for (int i = 1; i <= 12; i++) {
+            dataManagement.loadData("C:\\wps网盘同步文件夹\\高祈\\java_2020年4月21日\\csv\\large\\2019-"+i+".csv");
+        }
+        TreeSet<SumByRangeDateEntity> result= dataManagement.getStatistics04("20190301","20190409",null);
+        for(SumByRangeDateEntity minSumEntity:result){
+            System.out.println(minSumEntity);
+        }
+    }
+
+
 }
