@@ -1,5 +1,10 @@
 /**
- * 
+ * creates user interface for milk weights program
+ *
+ * @author Yansong Tang
+ * @author Carleigh Heintz
+ * @author Doran Redlich
+ * @author Qi Gao
  */
 package application;
 
@@ -416,7 +421,6 @@ public class userInterface extends Application {
    * @param args
    */
   public static void main(String[] args) {
-    // TODO Auto-generated method stub
     launch(args);
   }
 
