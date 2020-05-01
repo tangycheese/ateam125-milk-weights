@@ -8,6 +8,7 @@
  * @author Qi Gao
  */
 
+package application;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -416,7 +417,7 @@ public class userInterface extends Application {
                  if (i >= slots.size()) {
                    break;
                  }
-                 if (i >= treeArray.size()) {
+                 if (i >= treeArray.size()-1) {
                    break;
                  }
                }  
@@ -475,12 +476,13 @@ public class userInterface extends Application {
             nextBtn.setOnAction(new EventHandler<ActionEvent>() {
               public void handle(ActionEvent e) {
                Integer year = Integer.parseInt(yearInputD.getText());
-               TreeSet<StatisticEntityByYear> treeset = dm.getStatisticsANNUALREPORT(year, null);
+               Integer month = Integer.parseInt(monthInputD.getText());
+               TreeSet<SumByMonthEntity> treeset = dm.getStatisticsMONTHLYREPORT(year, month, null);
                if (displayStart + 12 < treeset.size() + 12) {
                  displayStart += 12;
                }
-               ArrayList<StatisticEntityByYear> treeArray= new ArrayList<StatisticEntityByYear>(treeset.size());
-               for (StatisticEntityByYear data: treeset) {  
+               ArrayList<SumByMonthEntity> treeArray= new ArrayList<SumByMonthEntity>(treeset.size());
+               for (SumByMonthEntity data: treeset) {  
                  treeArray.add(data);
                }
                for (int i = 0; i < 12; i++) { 
@@ -489,7 +491,7 @@ public class userInterface extends Application {
                  if (i >= slots.size()) {
                    break;
                  }
-                 if (i >= treeArray.size()) {
+                 if (i >= treeArray.size()-1) {
                    break;
                  }
                }  
@@ -498,12 +500,13 @@ public class userInterface extends Application {
             lastBtn.setOnAction(new EventHandler<ActionEvent>() {
               public void handle(ActionEvent e) {
                Integer year = Integer.parseInt(yearInputD.getText());
-               TreeSet<StatisticEntityByYear> treeset = dm.getStatisticsANNUALREPORT(year, null);
+               Integer month = Integer.parseInt(monthInputD.getText());
+               TreeSet<SumByMonthEntity> treeset = dm.getStatisticsMONTHLYREPORT(year, month, null);
                if (displayStart - 12 > 0) {
                  displayStart -= 12;
                }
-               ArrayList<StatisticEntityByYear> treeArray= new ArrayList<StatisticEntityByYear>(treeset.size());
-               for (StatisticEntityByYear data: treeset) {  
+               ArrayList<SumByMonthEntity> treeArray= new ArrayList<SumByMonthEntity>(treeset.size());
+               for (SumByMonthEntity data: treeset) {  
                  treeArray.add(data);
                }
                for (int i = 0; i < 12; i++) { 
@@ -515,7 +518,6 @@ public class userInterface extends Application {
                }  
                
            }});         
-            
             
             dataRoot.setRight(nextFarms);
             dataRoot.setLeft(lastFarms);
@@ -546,7 +548,49 @@ public class userInterface extends Application {
             
             IDVal.setText("start day: " + startInputD.getText() + " end day: " + endInputD.getText());
 
-
+            nextBtn.setOnAction(new EventHandler<ActionEvent>() {
+              public void handle(ActionEvent e) {
+               TreeSet<SumByRangeDateEntity> treeset = dm.getStatisticsDATERANGEREPORT(startInputD.getText().replace("-", ""), "2019" + endInputD.getText().replace("-", ""), null);
+               if (displayStart + 12 < treeset.size() + 12) {
+                 displayStart += 12;
+               }
+               ArrayList<SumByRangeDateEntity> treeArray= new ArrayList<SumByRangeDateEntity>(treeset.size());
+               for (SumByRangeDateEntity data: treeset) {  
+                 treeArray.add(data);
+               }
+               for (int i = 0; i < 12; i++) { 
+                  slots.get(i).setText(treeArray.get(i + displayStart - 12).getFarmId() + ", Weight: " + 
+                       treeArray.get(i + displayStart - 12).getWeight() + ", " + treeArray.get(i + displayStart - 12).getPercentInAllFarmIdWeight() + "%");
+                 if (i >= slots.size()) {
+                   break;
+                 }
+                 if (i >= treeArray.size()-1) {
+                   break;
+                 }
+               }  
+               
+           }});
+            lastBtn.setOnAction(new EventHandler<ActionEvent>() {
+              public void handle(ActionEvent e) {
+               Integer year = Integer.parseInt(yearInputD.getText());
+               Integer month = Integer.parseInt(monthInputD.getText());
+               TreeSet<SumByRangeDateEntity> treeset = dm.getStatisticsDATERANGEREPORT(startInputD.getText().replace("-", ""), "2019" + endInputD.getText().replace("-", ""), null);
+               if (displayStart - 12 > 0) {
+                 displayStart -= 12;
+               }
+               ArrayList<SumByRangeDateEntity> treeArray= new ArrayList<SumByRangeDateEntity>(treeset.size());
+               for (SumByRangeDateEntity data: treeset) {  
+                 treeArray.add(data);
+               }
+               for (int i = 0; i < 12; i++) { 
+                  slots.get(i).setText(treeArray.get(displayStart - 12 + i).getFarmId() + ", Weight: " + 
+                       treeArray.get(displayStart - 12 + i).getWeight() + ", " + treeArray.get(displayStart - 12 + i).getPercentInAllFarmIdWeight() + "%");
+                 if (i >= slots.size()) {
+                   break;
+                 }
+               }  
+               
+           }}); 
             
             dataRoot.setRight(nextFarms);
             dataRoot.setLeft(lastFarms);
