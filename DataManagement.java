@@ -123,7 +123,7 @@ public class DataManagement{
 
   public TreeSet<SumByRangeDateEntity> getStatisticsDATERANGEREPORT(
           String startDay,String endDay,Boolean asc) {
-    String s = endDay
+    String s = endDay;
     endDay=DateUtil.getAddDaysStr(endDay,1);
     SumByDayEntity.ASC=asc;
     TreeSet<SumByRangeDateEntity> treeSet=new TreeSet<>(); //[startDay,endDay)
