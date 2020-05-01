@@ -164,6 +164,7 @@ public class DataManagement{
 
   public void clearData(){
       allData.clear();
+      hasData = false;
   }
   
   public boolean dataLoaded() {
