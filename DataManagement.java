@@ -21,6 +21,7 @@ public class DataManagement{
 
     String startDay=DateUtil.getFirstDayStrByYear(year);
     String endDay=DateUtil.getEndDayStrByYear(year);
+    endDay=DateUtil.getAddDaysStr(endDay,1);
     DataBox dataBox=new DataBox();
     DataBox dataBoxAllFarmerByMonth=new DataBox();
     SortedMap<String,Map<String, SumByDayEntity>> targetData=allData.subMap(startDay,endDay);
@@ -64,6 +65,7 @@ public class DataManagement{
     TreeSet<StatisticEntityByYear> treeSet=new TreeSet<>();
     String startDay=DateUtil.getFirstDayStrByYear(year);
     String endDay=DateUtil.getEndDayStrByYear(year);
+    endDay=DateUtil.getAddDaysStr(endDay,1);
     DataBox dataBox=new DataBox();
     SortedMap<String,Map<String, SumByDayEntity>> targetData=allData.subMap(startDay,endDay);
     for(String day:targetData.keySet()){
@@ -93,6 +95,7 @@ public class DataManagement{
     for (int mon = 1; mon <=12 ; mon++) {
       String startDay = DateUtil.getFirstDayStr(year,mon);
       String endDay= DateUtil.getEndDayStr(year,mon);
+      endDay=DateUtil.getAddDaysStr(endDay,1);
       //get all month data
       SortedMap<String,Map<String, SumByDayEntity>> oneMonthData=allData.subMap(startDay,endDay);
       //farmid,collection
