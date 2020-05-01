@@ -235,7 +235,7 @@ public class userInterface extends Application {
         
     // new boxes for data display screen to not have issues when switching screens
     // othewise same 
-    Text farmDescD = new Text("Enter in the number of the farm");
+    Text farmDescD = new Text("Enter in farm number ex: Farm 1");
     TextField farmInputD = new TextField();
     HBox farmBoxD = new HBox(20);
     farmBoxD.setAlignment(Pos.CENTER);
@@ -303,8 +303,6 @@ public class userInterface extends Application {
         if (dm.dataLoaded() == false) {
           dataVal = 0;
         }
-        
-        
 
          // set up slots for data display
             Text IDVal = new Text();
@@ -353,51 +351,25 @@ public class userInterface extends Application {
           case 1: // farm report
             dataCenter.getChildren().addAll(currDataType, farmBoxD, yearBoxD, showDataBtn, showedData);
             
-            TreeSet<StatisticEntityByYear> treeset = new TreeSet<StatisticEntityByYear>();
+            TreeSet<SumByYearEntity> treeset = new TreeSet<SumByYearEntity>();
             try {
               Integer year = Integer.parseInt(yearInputD.getText());
-              treeset = dm.getStatisticsANNUALREPORT(year, null);
+              treeset = dm.getStatisticsFARMREPORT(year, farmInputD.getText());
             }catch (Exception err) {
               IDVal.setText("Error in inputting data");
+              dataRoot.setRight(null);
+              dataRoot.setLeft(null);
               break;
             }
-            
-            nextBtn.setOnAction(new EventHandler<ActionEvent>() {
-              public void handle(ActionEvent e) {
-                System.out.println("bkas");
-               Integer year = Integer.parseInt(yearInputD.getText());
-               TreeSet<StatisticEntityByYear> treeset = dm.getStatisticsANNUALREPORT(year, null);
-               if (displayStart + 12 < treeset.size()) {
-                 displayStart += 12;
-               }
-               ArrayList<StatisticEntityByYear> treeArray= new ArrayList<StatisticEntityByYear>(treeset.size());
-               for (StatisticEntityByYear data: treeset) {  
-                 treeArray.add(data);
-               }
-               
-               for (int i = displayStart; i < displayStart + 12; i++) { 
-                  slots.get(i).setText("FarmID: " + treeArray.get(i).getFarmId() + ", Weight: " + 
-                       treeArray.get(i).getWeight() + ", Percent: " + treeArray.get(i).getPercentInAllFarmIdWeight());
-               
-                 if (i >= treeset.size()) {
-                   break;
-                 }
-               }  
-               
-           }});
-            
-            IDVal.setText("Farm #" + farmInputD.getText() + " Year: " + yearInputD.getText());
-            
-            IDVal.setText("Year: " + yearInputD.getText());
+            IDVal.setText(farmInputD.getText() + " Year: " + yearInputD.getText());
             int i = 0;
-            for (StatisticEntityByYear data: treeset) { 
-              slots.get(i).setText("FarmID: " + data.getFarmId() + ", Weight: " + 
-                   data.getWeight() + ", Percent: " + data.getPercentInAllFarmIdWeight());
-           
-             if (i >= treeset.size()) {
+            for (SumByYearEntity data: treeset) { 
+              slots.get(i).setText("Month: " + data.getMonth() + ", Weight: " + 
+                   data.getWeight() + ", " + data.getPercentInAllMonthWeight() + "%");
+             i++;
+             if (i >= slots.size()) {
                break;
              }
-             i++;
             }
             
             dataRoot.setRight(null);
@@ -412,14 +384,27 @@ public class userInterface extends Application {
               treeset2 = dm.getStatisticsANNUALREPORT(year, null);
             }catch (Exception err) {
               IDVal.setText("Error in inputting data");
+              dataRoot.setRight(null);
+              dataRoot.setLeft(null);
               break;
+            }
+            
+            IDVal.setText("Year: " + yearInputD.getText());
+            int i2 = 0;
+            for (StatisticEntityByYear data: treeset2) { 
+              slots.get(i2).setText(data.getFarmId() + ", Weight: " + 
+                   data.getWeight() + ", " + data.getPercentInAllFarmIdWeight() + "%");
+             i2++;
+             if (i2 >= slots.size()) {
+               break;
+             }
             }
             
             nextBtn.setOnAction(new EventHandler<ActionEvent>() {
               public void handle(ActionEvent e) {
                Integer year = Integer.parseInt(yearInputD.getText());
                TreeSet<StatisticEntityByYear> treeset = dm.getStatisticsANNUALREPORT(year, null);
-               if (displayStart + 12 < treeset.size()) {
+               if (displayStart + 12 < treeset.size() + 12) {
                  displayStart += 12;
                }
                ArrayList<StatisticEntityByYear> treeArray= new ArrayList<StatisticEntityByYear>(treeset.size());
@@ -428,8 +413,11 @@ public class userInterface extends Application {
                }
                for (int i = 0; i < 12; i++) { 
                   slots.get(i).setText(treeArray.get(i + displayStart - 12).getFarmId() + ", Weight: " + 
-                       treeArray.get(i + displayStart - 12).getWeight() + ", %: " + treeArray.get(i + displayStart - 12).getPercentInAllFarmIdWeight());
+                       treeArray.get(i + displayStart - 12).getWeight() + ", " + treeArray.get(i + displayStart - 12).getPercentInAllFarmIdWeight() + "%");
                  if (i >= slots.size()) {
+                   break;
+                 }
+                 if (i >= treeArray.size()) {
                    break;
                  }
                }  
@@ -448,73 +436,119 @@ public class userInterface extends Application {
                }
                for (int i = 0; i < 12; i++) { 
                   slots.get(i).setText(treeArray.get(displayStart - 12 + i).getFarmId() + ", Weight: " + 
-                       treeArray.get(displayStart - 12 + i).getWeight() + ", %: " + treeArray.get(displayStart - 12 + i).getPercentInAllFarmIdWeight());
+                       treeArray.get(displayStart - 12 + i).getWeight() + ", " + treeArray.get(displayStart - 12 + i).getPercentInAllFarmIdWeight() + "%");
                  if (i >= slots.size()) {
                    break;
                  }
                }  
                
-           }});
-            
-            IDVal.setText("Farm #" + farmInputD.getText() + " Year: " + yearInputD.getText());
-            
-            IDVal.setText("Year: " + yearInputD.getText());
-            int i2 = 0;
-            for (StatisticEntityByYear data: treeset2) { 
-              slots.get(i2).setText(data.getFarmId() + ", Weight: " + 
-                   data.getWeight() + ", %: " + data.getPercentInAllFarmIdWeight());
-              
-             i2++;
-             if (i2 >= slots.size()) {
-               break;
-             }
-             
-            }
+           }});          
             
             dataRoot.setRight(nextFarms);
             dataRoot.setLeft(lastFarms);
             break;
           case 3: // month report
             dataCenter.getChildren().addAll(currDataType, monthBoxD, yearBoxD, showDataBtn, showedData);
+            
+            TreeSet<SumByMonthEntity> treeset3 = new TreeSet<SumByMonthEntity>();
+            try {
+              Integer year = Integer.parseInt(yearInputD.getText());
+              Integer month = Integer.parseInt(monthInputD.getText());
+              treeset3 = dm.getStatisticsMONTHLYREPORT(year, month, null);
+            }catch (Exception err) {
+              IDVal.setText("Error in inputting data");
+              dataRoot.setRight(null);
+              dataRoot.setLeft(null);
+              break;
+            }
+            
             IDVal.setText("Month: " + monthInputD.getText() + " Year: " + yearInputD.getText());
-            s1.setText("farm: 3253, 8.33");
-            s2.setText("farm: 3253, 8.33");
-            s3.setText("farm: 3253, 8.33");
-            s4.setText("farm: 3253, 8.33");
+            int i3 = 0;
+            for (SumByMonthEntity data: treeset3) { 
+              slots.get(i3).setText(data.getFarmId() + ", Weight: " + 
+                   data.getWeight() + ", " + data.getPercentInAllFarmIdWeight() + "%");
+             i3++;
+             if (i3 >= slots.size()) {
+               break;
+             }
+            }
             
-            s5.setText("farm: 3253, 8.33");
-            s6.setText("farm: 3253, 8.33");
-            s7.setText("farm: 3253, 8.33");
-            s8.setText("farm: 3253, 8.33");
+            nextBtn.setOnAction(new EventHandler<ActionEvent>() {
+              public void handle(ActionEvent e) {
+               Integer year = Integer.parseInt(yearInputD.getText());
+               TreeSet<StatisticEntityByYear> treeset = dm.getStatisticsANNUALREPORT(year, null);
+               if (displayStart + 12 < treeset.size() + 12) {
+                 displayStart += 12;
+               }
+               ArrayList<StatisticEntityByYear> treeArray= new ArrayList<StatisticEntityByYear>(treeset.size());
+               for (StatisticEntityByYear data: treeset) {  
+                 treeArray.add(data);
+               }
+               for (int i = 0; i < 12; i++) { 
+                  slots.get(i).setText(treeArray.get(i + displayStart - 12).getFarmId() + ", Weight: " + 
+                       treeArray.get(i + displayStart - 12).getWeight() + ", " + treeArray.get(i + displayStart - 12).getPercentInAllFarmIdWeight() + "%");
+                 if (i >= slots.size()) {
+                   break;
+                 }
+                 if (i >= treeArray.size()) {
+                   break;
+                 }
+               }  
+               
+           }});
+            lastBtn.setOnAction(new EventHandler<ActionEvent>() {
+              public void handle(ActionEvent e) {
+               Integer year = Integer.parseInt(yearInputD.getText());
+               TreeSet<StatisticEntityByYear> treeset = dm.getStatisticsANNUALREPORT(year, null);
+               if (displayStart - 12 > 0) {
+                 displayStart -= 12;
+               }
+               ArrayList<StatisticEntityByYear> treeArray= new ArrayList<StatisticEntityByYear>(treeset.size());
+               for (StatisticEntityByYear data: treeset) {  
+                 treeArray.add(data);
+               }
+               for (int i = 0; i < 12; i++) { 
+                  slots.get(i).setText(treeArray.get(displayStart - 12 + i).getFarmId() + ", Weight: " + 
+                       treeArray.get(displayStart - 12 + i).getWeight() + ", " + treeArray.get(displayStart - 12 + i).getPercentInAllFarmIdWeight() + "%");
+                 if (i >= slots.size()) {
+                   break;
+                 }
+               }  
+               
+           }});         
             
-            s9.setText("farm: 3253, 8.33");
-            s10.setText("farm: 3253, 8.33");
-            s11.setText("farm: 3253, 8.33");
-            s12.setText("farm: 3253, 8.33");
-            summaryStats.setText("total: 45354 min: 43  max: 5234 avg: 3323");
-            showedData.getChildren().add(summaryStats);
+            
             dataRoot.setRight(nextFarms);
             dataRoot.setLeft(lastFarms);
             break;
           case 4: // date report
             dataCenter.getChildren().addAll(currDataType, startBoxD, endBoxD, showDataBtn, showedData);
+            TreeSet<SumByRangeDateEntity> treeset4 = new TreeSet<SumByRangeDateEntity>();
+            try {
+              treeset4 = dm.getStatisticsDATERANGEREPORT(startInputD.getText(), endInputD.getText(), null);
+            }catch (Exception err) {
+              System.out.println();
+              IDVal.setText("Error in inputting data");
+              dataRoot.setRight(null);
+              dataRoot.setLeft(null);
+              break;
+            }
+            
+            IDVal.setText("Month: " + monthInputD.getText() + " Year: " + yearInputD.getText());
+            int i4 = 0;
+            for (SumByRangeDateEntity data: treeset4) { 
+              slots.get(i4).setText(data.getFarmId() + ", Weight: " + 
+                   data.getWeight() + ", " + data.getPercentInAllFarmIdWeight() + "%");
+             i4++;
+             if (i4 >= slots.size()) {
+               break;
+             }
+            }
+            
             IDVal.setText("start day: " + startInputD.getText() + " end day: " + endInputD.getText());
-            s1.setText("farm: 3253, 8.33");
-            s2.setText("farm: 3253, 8.33");
-            s3.setText("farm: 3253, 8.33");
-            s4.setText("farm: 3253, 8.33");
+
+
             
-            s5.setText("farm: 3253, 8.33");
-            s6.setText("farm: 3253, 8.33");
-            s7.setText("farm: 3253, 8.33");
-            s8.setText("farm: 3253, 8.33");
-            
-            s9.setText("farm: 3253, 8.33");
-            s10.setText("farm: 3253, 8.33");
-            s11.setText("farm: 3253, 8.33");
-            s12.setText("farm: 3253, 8.33");
-            summaryStats.setText("total weight: 3432 min: 342  max: 2353  avg: 2222");
-            showedData.getChildren().add(summaryStats);
             dataRoot.setRight(nextFarms);
             dataRoot.setLeft(lastFarms);
             break;
