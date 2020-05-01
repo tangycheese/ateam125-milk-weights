@@ -7,7 +7,6 @@
  * @author Doran Redlich
  * @author Qi Gao
  */
-package application;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -525,7 +524,7 @@ public class userInterface extends Application {
             dataCenter.getChildren().addAll(currDataType, startBoxD, endBoxD, showDataBtn, showedData);
             TreeSet<SumByRangeDateEntity> treeset4 = new TreeSet<SumByRangeDateEntity>();
             try {
-              treeset4 = dm.getStatisticsDATERANGEREPORT(startInputD.getText(), endInputD.getText(), null);
+              treeset4 = dm.getStatisticsDATERANGEREPORT(startInputD.getText().replace("-", ""), "2019" + endInputD.getText().replace("-", ""), null);
             }catch (Exception err) {
               System.out.println();
               IDVal.setText("Error in inputting data");
