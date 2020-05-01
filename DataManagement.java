@@ -120,6 +120,7 @@ public class DataManagement{
 
   public TreeSet<SumByRangeDateEntity> getStatisticsDATERANGEREPORT(
           String startDay,String endDay,Boolean asc) {
+    String s = endDay
     endDay=DateUtil.getAddDaysStr(endDay,1);
     SumByDayEntity.ASC=asc;
     TreeSet<SumByRangeDateEntity> treeSet=new TreeSet<>(); //[startDay,endDay)
@@ -134,7 +135,7 @@ public class DataManagement{
     Map<String, DataBox.SumDate> result=dataBox.sumByFarmId();
     for(String farmId:result.keySet()){
       DataBox.SumDate item=result.get(farmId);
-      treeSet.add(new SumByRangeDateEntity(farmId,startDay+"-"+endDay,item.weight,dataBox.getTotalWeight()));
+      treeSet.add(new SumByRangeDateEntity(farmId,startDay+"-"+s,item.weight,dataBox.getTotalWeight()));
     }
     return treeSet;
   }
